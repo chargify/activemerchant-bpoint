@@ -116,7 +116,7 @@ module ActiveMerchant
       end
 
       def message_from(response)
-        response[:response_message]
+        response[:response_message] || response[:authorisation_result]
       end
 
       def post_data(action, parameters = {})

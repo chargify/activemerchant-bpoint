@@ -34,6 +34,10 @@ describe ActiveMerchant::Billing::BpointGateway do
       subject { VCR.use_cassette('invalid CC purchase') { gateway.purchase(1000, fail_credit_card, options) } }
 
       it { should_not be_success }
+
+      it 'returns a "Declined" message' do
+        subject.message.should eql 'Declined'
+      end
     end
   end
 
@@ -121,6 +125,10 @@ describe ActiveMerchant::Billing::BpointGateway do
         subject { VCR.use_cassette('invalid CC authorization') { gateway_with_preauth.authorize(1000, fail_credit_card, options) } }
 
         it { should_not be_success }
+
+        it 'returns a "Declined" message' do
+          subject.message.should eql 'Declined'
+        end
       end
     end
   end
