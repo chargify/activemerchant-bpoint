@@ -20,6 +20,6 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'vcr', '~> 2.0'
-  s.add_development_dependency 'fakeweb'
+  s.add_development_dependency 'webmock', '~> 1.15.2'
   s.add_runtime_dependency 'activemerchant', '>= 1.20.0'
 end

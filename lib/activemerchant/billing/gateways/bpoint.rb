@@ -16,6 +16,22 @@ module ActiveMerchant
         super
       end
 
+      # Running pre-authorizations is supported by BPOINT, but it requires the
+      # use of a secondary "facility" with its own username, password, and
+      # merchant number. BPOINT facilities can be configured to support either
+      # PREAUTH/CAPTURE or PURCHASE, but not both.  If you wish to use support
+      # for authorizations (pre-auths) then the :preauth_login,
+      # :preauth_password, and :preauth_merchant_number options must be provided
+      # during gateway initialization.
+      def authorize(money, creditcard, options = {})
+        requires!(@options, :preauth_login, :preauth_password, :preauth_merchant_number)
+        post = {:PaymentType => 'PREAUTH'}
+        add_invoice(post, options)
+        add_creditcard(post, creditcard, options)
+
+        commit('ProcessPayment', money, post)
+      end
+
       def purchase(money, creditcard, options = {})
         post = {}
         add_invoice(post, options)
@@ -81,9 +97,9 @@ module ActiveMerchant
 
       def commit(action, money, parameters)
         if action == 'ProcessPayment'
-          parameters[:Amount]      = amount(money)
-          parameters[:PaymentType] = 'PAYMENT'
-          parameters[:TxnType]     = 'INTERNET_ANONYMOUS'
+          parameters[:Amount]        = amount(money)
+          parameters[:PaymentType] ||= 'PAYMENT'
+          parameters[:TxnType]       = 'INTERNET_ANONYMOUS'
         end
 
         response = parse(ssl_post(LIVE_URL, post_data(action, parameters), 'SOAPAction' => "urn:Eve/#{action}", 'Content-Type' => 'text/xml;charset=UTF-8'))
@@ -120,14 +136,27 @@ module ActiveMerchant
         tnx_request = request.add_element('ns0:txnReq') if action == 'ProcessPayment'
         tnx_request = request if tnx_request.blank?
 
-        request.add_element('ns0:username').text       = @options[:login]
-        request.add_element('ns0:password').text       = @options[:password]
-        request.add_element('ns0:merchantNumber').text = @options[:merchant_number]
+        credentials = credentials_for_payment_type(parameters[:PaymentType])
+        request.add_element('ns0:username').text       = credentials[:login]
+        request.add_element('ns0:password').text       = credentials[:password]
+        request.add_element('ns0:merchantNumber').text = credentials[:merchant_number]
 
         parameters.each { |key, value| tnx_request.add_element("ns0:#{key}").text = value }
 
         xml << REXML::XMLDecl.new('1.0', 'UTF-8')
         xml.to_s
+      end
+
+      def credentials_for_payment_type(payment_type)
+        if payment_type == 'PREAUTH'
+          {
+              :login           => @options[:preauth_login],
+              :password        => @options[:preauth_password],
+              :merchant_number => @options[:preauth_merchant_number]
+          }
+        else
+          @options.slice(:login, :password, :merchant_number)
+        end
       end
     end
   end

@@ -91,4 +91,37 @@ describe ActiveMerchant::Billing::BpointGateway do
       it { should_not be_success }
     end
   end
+
+  context 'performing a pre-authorization against a credit card' do
+    context 'using a gateway without pre-auth facility credentials' do
+      it 'should raise an ArgumentError' do
+        expect { gateway.authorize(1000, success_credit_card) }.to raise_error(ArgumentError, "Missing required parameter: preauth_login")
+      end
+    end
+
+    context 'using a gateway with pre-auth facility credentials' do
+      context 'on a valid credit card' do
+        subject { VCR.use_cassette('valid CC authorization') { gateway_with_preauth.authorize(1000, success_credit_card, options) } }
+
+        it 'uses the pre-auth facility credentials' do
+          subject
+          WebMock.should have_requested(:post, 'https://www.bpoint.com.au/evolve/service.asmx').with { |req|
+            req.body.include? "<ns0:merchantNumber>#{PREAUTH_GATEWAY_MERCHANT_NUMBER}</ns0:merchantNumber>"
+          }
+        end
+
+        it { should be_success }
+
+        it 'should return an authorization ID' do
+          subject.authorization.should be_present
+        end
+      end
+
+      context 'on an invalid credit card' do
+        subject { VCR.use_cassette('invalid CC authorization') { gateway_with_preauth.authorize(1000, fail_credit_card, options) } }
+
+        it { should_not be_success }
+      end
+    end
+  end
 end
