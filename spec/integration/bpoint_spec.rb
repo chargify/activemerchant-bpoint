@@ -3,7 +3,7 @@ require 'spec_helper'
 describe ActiveMerchant::Billing::BpointGateway do
   let(:options)             { { :order_id => '1', :description => 'Store Purchase' } }
   let(:success_credit_card) { credit_card('5123456789012346', :year => 2100) }
-  let(:fail_credit_card)    { credit_card('5123456789012346', :year => 2010) }
+  let(:fail_credit_card)    { credit_card('5123456789012346', :year => 2054) }
   let(:invalid_credit_card) { credit_card('', :year => 2010) }
 
   context 'using invalid details' do
@@ -27,6 +27,10 @@ describe ActiveMerchant::Billing::BpointGateway do
 
       it 'should return an authorization ID' do
         subject.authorization.should be_present
+      end
+
+      it 'returns an "Approved" message' do
+        subject.message.should eql 'Approved'
       end
     end
 
@@ -52,12 +56,20 @@ describe ActiveMerchant::Billing::BpointGateway do
       it 'should return an authorization ID' do
         subject.authorization.should be_present
       end
+
+      it 'returns an "Approved" message' do
+        subject.message.should eql 'Approved'
+      end
     end
 
     context 'on an invalid token' do
       subject { VCR.use_cassette('invalid token purchase') { gateway.purchase(1000, 'invalid', options) } }
 
       it { should_not be_success }
+
+      it 'returns an "unable to determine card type" message' do
+        subject.message.should eql 'unable to determine card type'
+      end
     end
 
   end
@@ -77,11 +89,15 @@ describe ActiveMerchant::Billing::BpointGateway do
       subject { VCR.use_cassette('store invalid CC') { gateway.store(invalid_credit_card) } }
 
       it { should_not be_success }
+
+      it 'returns an "invalid card number: no value" message' do
+        subject.message.should eql 'invalid card number: no value'
+      end
     end
   end
 
   context 'removing a credit card from storage' do
-    let!(:token)  { VCR.use_cassette('store valid CC') { gateway.store(success_credit_card).params['billingid'] } }
+    let!(:token)  { VCR.use_cassette('store valid CC for removal') { gateway.store(success_credit_card).params['billingid'] } }
 
     context 'when given a valid token' do
       subject { VCR.use_cassette('unstore valid token') { gateway.unstore(token) } }
@@ -93,6 +109,22 @@ describe ActiveMerchant::Billing::BpointGateway do
       subject { VCR.use_cassette('unstore invalid token') { gateway.unstore('7') } }
 
       it { should_not be_success }
+
+      it 'returns an "invalid token" message' do
+        subject.message.should eql 'invalid token'
+      end
+    end
+  end
+
+  context 'attempting to charge a removed token' do
+    let!(:token)  { VCR.use_cassette('store valid CC for removal') { gateway.store(success_credit_card).params['billingid'] } }
+    before        { VCR.use_cassette('unstore valid token') { gateway.unstore(token) } }
+    subject       { VCR.use_cassette('invalid token purchase against unstored card') { gateway.purchase(1000, token, options) } }
+
+    it { should_not be_success }
+
+    it 'returns an "Payment details not found" message' do
+      subject.message.should eql 'Payment details not found'
     end
   end
 
@@ -118,6 +150,10 @@ describe ActiveMerchant::Billing::BpointGateway do
 
         it 'should return an authorization ID' do
           subject.authorization.should be_present
+        end
+
+        it 'returns an "Approved" message' do
+          subject.message.should eql 'Approved'
         end
       end
 

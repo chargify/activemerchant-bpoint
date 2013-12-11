@@ -83,16 +83,33 @@ module ActiveMerchant
         return {} if body.blank?
 
         xml    = REXML::Document.new(body)
-        result = {}.tap { |response| xml.root.elements.to_a.each { |node| parse_element(response, node) } }
+        {}.tap { |response| xml.root.elements.to_a.each { |node| parse_element(response, node) } }
       end
 
       def parse_element(response, node)
+        # Note: there can be two "ResponseCode" elements:
+        #   1. soap:Enevelope/soap:Body/ProcessPayment/response/ResponseCode = this is the "Web Service Response Code" (i.e. "SUCCESS" or "FAILURE")
+        #   2. soap:Enevelope/soap:Body/ProcessPayment/ResponseCode          = this is the "Web Method Response Code"  (i.e. "0" or "PT_T2")
+        #
+        # All elements beneath /response (the Web Service Response) will be nested beneath :web_service key.
+        # All other elements will be un-nested.
+        if node.name == 'response'
+          return parse_web_service_response(response, node)
+        end
+
         unless node.has_elements?
           return response[:billingid] = node.text if node.name == 'Token'
           return response[node.name.underscore.to_sym] = node.text
         end
 
         node.elements.each{|element| parse_element(response, element) }
+      end
+
+      def parse_web_service_response(response, node)
+        response[:web_service] = {}
+        response[:web_service][:response_code]    = node.elements['ResponseCode'].try(:text)
+        response[:web_service][:response_message] = node.elements['ResponseMessage'].try(:text)
+        response
       end
 
       def commit(action, money, parameters)
@@ -112,11 +129,13 @@ module ActiveMerchant
       end
 
       def success_from(response)
-        response[:response_code] == 'SUCCESS' && (response[:acquirer_response_code] == nil || response[:acquirer_response_code] == '00')
+        response[:web_service][:response_code] == 'SUCCESS' && (response[:response_code] == nil || response[:response_code] == '0')
       end
 
       def message_from(response)
-        response[:response_message] || response[:authorisation_result]
+        response[:web_service][:response_code] == 'SUCCESS' ?
+          response[:authorisation_result] :
+          response[:web_service][:response_message]
       end
 
       def post_data(action, parameters = {})

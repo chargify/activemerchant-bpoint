@@ -7,12 +7,13 @@ http_interactions:
       encoding: UTF-8
       string: <?xml version='1.0' encoding='UTF-8'?><env:Envelope xmlns:env='http://schemas.xmlsoap.org/soap/envelope/'
         xmlns:ns0='urn:Eve' xmlns:wsdl='urn:Eve' xmlns:xsd='http://www.w3.org/2001/XMLSchema'
-        xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'><env:Body><ns0:DeleteToken><ns0:username>[GATEWAY_LOGIN]</ns0:username><ns0:password>[GATEWAY_PASSWORD]</ns0:password><ns0:merchantNumber>[GATEWAY_MERCHANT_NUMBER]</ns0:merchantNumber><ns0:token>5999991669787766</ns0:token></ns0:DeleteToken></env:Body></env:Envelope>
+        xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'><env:Body><ns0:AddToken><ns0:tokenRequest><ns0:CardNumber>5123456789012346</ns0:CardNumber><ns0:ExpiryDate>9900</ns0:ExpiryDate><ns0:CVC>123</ns0:CVC><ns0:CRN1>Longbob
+        Longsen</ns0:CRN1></ns0:tokenRequest><ns0:username>[GATEWAY_LOGIN]</ns0:username><ns0:password>[GATEWAY_PASSWORD]</ns0:password><ns0:merchantNumber>[GATEWAY_MERCHANT_NUMBER]</ns0:merchantNumber></ns0:AddToken></env:Body></env:Envelope>
     headers:
       Content-Type:
       - text/xml;charset=UTF-8
       Soapaction:
-      - urn:Eve/DeleteToken
+      - urn:Eve/AddToken
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
       Accept:
@@ -33,14 +34,14 @@ http_interactions:
       Server:
       - Microsoft-IIS/7.5
       Date:
-      - Wed, 11 Dec 2013 15:03:18 GMT
+      - Wed, 11 Dec 2013 15:03:16 GMT
       Content-Length:
-      - '362'
+      - '492'
     body:
       encoding: UTF-8
       string: <?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><soap:Body><DeleteTokenResponse
-        xmlns="urn:Eve"><response><ResponseCode>SUCCESS</ResponseCode></response></DeleteTokenResponse></soap:Body></soap:Envelope>
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><soap:Body><AddTokenResponse
+        xmlns="urn:Eve"><AddTokenResult><Token>5999991669787766</Token><MaskedCardNumber>512345...346</MaskedCardNumber><CardType>MC</CardType></AddTokenResult><response><ResponseCode>SUCCESS</ResponseCode></response></AddTokenResponse></soap:Body></soap:Envelope>
     http_version: 
-  recorded_at: Wed, 11 Dec 2013 15:03:18 GMT
+  recorded_at: Wed, 11 Dec 2013 15:03:16 GMT
 recorded_with: VCR 2.6.0
