@@ -129,12 +129,6 @@ describe ActiveMerchant::Billing::BpointGateway do
   end
 
   context 'performing a pre-authorization against a credit card' do
-    context 'using a gateway without pre-auth facility credentials' do
-      it 'should raise an ArgumentError' do
-        expect { gateway.authorize(1000, success_credit_card) }.to raise_error(ArgumentError, "Missing required parameter: preauth_login")
-      end
-    end
-
     context 'using a gateway with pre-auth facility credentials' do
       context 'on a valid credit card' do
         subject { VCR.use_cassette('valid CC authorization') { gateway_with_preauth.authorize(1000, success_credit_card, options) } }
@@ -164,6 +158,26 @@ describe ActiveMerchant::Billing::BpointGateway do
 
         it 'returns a "Declined" message' do
           subject.message.should eql 'Declined'
+        end
+      end
+    end
+
+    describe 'voiding (reversing) a prior authorization' do
+      let(:auth_response) do
+        VCR.use_cassette('valid CC authorization') do |cassette|
+          gateway_with_preauth.authorize(1000, success_credit_card, options)
+        end
+      end
+
+      context "with a valid prior transaction number" do
+        let(:transaction_number) { auth_response.params['transaction_number'] }
+
+        it 'is successful' do
+          void_response = VCR.use_cassette('successful authorization reversal') do
+            gateway_with_preauth.void(auth_response.params['transaction_number'])
+          end
+
+          void_response.should be_success
         end
       end
     end

@@ -20,11 +20,9 @@ module ActiveMerchant
       # use of a secondary "facility" with its own username, password, and
       # merchant number. BPOINT facilities can be configured to support either
       # PREAUTH/CAPTURE or PURCHASE, but not both.  If you wish to use support
-      # for authorizations (pre-auths) then the :preauth_login,
-      # :preauth_password, and :preauth_merchant_number options must be provided
-      # during gateway initialization.
+      # for authorizations (pre-auths) then you will need to use credentials for
+      # a facility with this ability.
       def authorize(money, creditcard, options = {})
-        requires!(@options, :preauth_login, :preauth_password, :preauth_merchant_number)
         post = {:PaymentType => 'PREAUTH'}
         add_invoice(post, options)
         add_creditcard(post, creditcard, options)
@@ -40,6 +38,24 @@ module ActiveMerchant
         commit('ProcessPayment', money, post)
       end
 
+      # Voids a prior authorization or purchase (a "reversal").
+      #
+      # +transaction_number+: (Required) The TransactionNumber from the transaction to reverse.
+      def void(transaction_number, options = {})
+        # Find the original amount via a search
+        original_transaction = search({'TransactionNumber' => transaction_number})
+        original_amount = if search_results = original_transaction.params['search_results']
+          (search_results.first || {})['amount'].to_i
+        end
+
+        post = {
+          :PaymentType => 'REVERSAL',
+          :OriginalTransactionNumber => transaction_number
+        }
+
+        commit('ProcessPayment', original_amount, post)
+      end
+
       def store(credit_card, options = {})
         post = {}
         add_creditcard(post, credit_card, options)
@@ -51,6 +67,13 @@ module ActiveMerchant
         post = { :token => token }
 
         commit('DeleteToken', nil, post)
+      end
+
+      # Search Transactions.
+      #
+      # Search results returned as an array in response.params[:search_results]
+      def search(params = {})
+        commit('SearchTransactions', nil, params)
       end
 
       def test?
@@ -97,6 +120,11 @@ module ActiveMerchant
           return parse_web_service_response(response, node)
         end
 
+        # Extract search results
+        if node.name == 'SearchTransactionsResult'
+          return parse_search_results(response, node)
+        end
+
         unless node.has_elements?
           return response[:billingid] = node.text if node.name == 'Token'
           return response[node.name.underscore.to_sym] = node.text
@@ -109,12 +137,20 @@ module ActiveMerchant
         response[:web_service] = {}
         response[:web_service][:response_code]    = node.elements['ResponseCode'].try(:text)
         response[:web_service][:response_message] = node.elements['ResponseMessage'].try(:text)
-        response
+      end
+
+      # <SearchTransactionsResult>
+      #   <Txn>...</Txn>
+      #   <Txn>...</Txn>
+      #   ...
+      # </SearchTransactionsResult>
+      def parse_search_results(response, node)
+        response[:search_results] = node.to_a.map { |txn| {}.tap {|h| parse_element(h, txn) }.stringify_keys }
       end
 
       def commit(action, money, parameters)
         if action == 'ProcessPayment'
-          parameters[:Amount]        = amount(money)
+          parameters[:Amount]        = amount(money) if money
           parameters[:PaymentType] ||= 'PAYMENT'
           parameters[:TxnType]       = 'INTERNET_ANONYMOUS'
         end
@@ -153,29 +189,17 @@ module ActiveMerchant
 
         tnx_request = request.add_element('ns0:tokenRequest') if action == 'AddToken'
         tnx_request = request.add_element('ns0:txnReq') if action == 'ProcessPayment'
+        tnx_request = request.add_element('ns0:search') if action == 'SearchTransactions'
         tnx_request = request if tnx_request.blank?
 
-        credentials = credentials_for_payment_type(parameters[:PaymentType])
-        request.add_element('ns0:username').text       = credentials[:login]
-        request.add_element('ns0:password').text       = credentials[:password]
-        request.add_element('ns0:merchantNumber').text = credentials[:merchant_number]
+        request.add_element('ns0:username').text       = @options[:login]
+        request.add_element('ns0:password').text       = @options[:password]
+        request.add_element('ns0:merchantNumber').text = @options[:merchant_number]
 
         parameters.each { |key, value| tnx_request.add_element("ns0:#{key}").text = value }
 
         xml << REXML::XMLDecl.new('1.0', 'UTF-8')
         xml.to_s
-      end
-
-      def credentials_for_payment_type(payment_type)
-        if payment_type == 'PREAUTH'
-          {
-              :login           => @options[:preauth_login],
-              :password        => @options[:preauth_password],
-              :merchant_number => @options[:preauth_merchant_number]
-          }
-        else
-          @options.slice(:login, :password, :merchant_number)
-        end
       end
     end
   end

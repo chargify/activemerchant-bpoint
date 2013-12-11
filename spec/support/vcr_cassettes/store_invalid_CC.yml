@@ -10,34 +10,32 @@ http_interactions:
         xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'><env:Body><ns0:AddToken><ns0:tokenRequest><ns0:CardNumber></ns0:CardNumber><ns0:ExpiryDate>9910</ns0:ExpiryDate><ns0:CVC>123</ns0:CVC><ns0:CRN1>Longbob
         Longsen</ns0:CRN1></ns0:tokenRequest><ns0:username>[GATEWAY_LOGIN]</ns0:username><ns0:password>[GATEWAY_PASSWORD]</ns0:password><ns0:merchantNumber>[GATEWAY_MERCHANT_NUMBER]</ns0:merchantNumber></ns0:AddToken></env:Body></env:Envelope>
     headers:
-      content-type:
+      Content-Type:
       - text/xml;charset=UTF-8
-      soapaction:
+      Soapaction:
       - urn:Eve/AddToken
-      accept-encoding:
+      Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      accept:
+      Accept:
       - '*/*'
-      user-agent:
+      User-Agent:
       - Ruby
   response:
     status:
       code: 200
       message: OK
     headers:
-      cache-control:
+      Cache-Control:
       - private, max-age=0,no-store,no-cache,must-revalidate,proxy-revalidate
-      pragma:
+      Pragma:
       - no-cache
-      content-type:
+      Content-Type:
       - text/xml; charset=utf-8
-      server:
+      Server:
       - Microsoft-IIS/7.5
-      date:
-      - Wed, 30 Oct 2013 20:56:09 GMT
-      connection:
-      - close
-      content-length:
+      Date:
+      - Wed, 11 Dec 2013 20:58:22 GMT
+      Content-Length:
       - '436'
     body:
       encoding: UTF-8
@@ -45,6 +43,6 @@ http_interactions:
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><soap:Body><AddTokenResponse
         xmlns="urn:Eve"><AddTokenResult /><response><ResponseCode>ERROR</ResponseCode><ResponseMessage>invalid
         card number: no value</ResponseMessage></response></AddTokenResponse></soap:Body></soap:Envelope>'
-    http_version: '1.1'
-  recorded_at: Wed, 30 Oct 2013 20:56:11 GMT
+    http_version: 
+  recorded_at: Wed, 11 Dec 2013 20:58:22 GMT
 recorded_with: VCR 2.6.0

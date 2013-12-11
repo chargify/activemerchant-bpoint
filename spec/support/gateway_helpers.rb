@@ -17,9 +17,8 @@ module GatewayHelpers
     ActiveMerchant::Billing::BpointGateway.new({ :login => GATEWAY_LOGIN, :password => GATEWAY_PASSWORD, :merchant_number => GATEWAY_MERCHANT_NUMBER }.merge(options))
   end
 
-  def gateway_with_preauth(options = {})
-    normal_credentials  = { :login => GATEWAY_LOGIN, :password => GATEWAY_PASSWORD, :merchant_number => GATEWAY_MERCHANT_NUMBER }
-    preauth_credentials = { :preauth_login => PREAUTH_GATEWAY_LOGIN, :preauth_password => PREAUTH_GATEWAY_PASSWORD, :preauth_merchant_number => PREAUTH_GATEWAY_MERCHANT_NUMBER }
-    ActiveMerchant::Billing::BpointGateway.new(normal_credentials.merge(preauth_credentials).merge(options))
+  def gateway_with_preauth
+    preauth_credentials = { :login => PREAUTH_GATEWAY_LOGIN, :password => PREAUTH_GATEWAY_PASSWORD, :merchant_number => PREAUTH_GATEWAY_MERCHANT_NUMBER }
+    gateway(preauth_credentials)
   end
 end

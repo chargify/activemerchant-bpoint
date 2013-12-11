@@ -7,7 +7,7 @@ http_interactions:
       encoding: UTF-8
       string: <?xml version='1.0' encoding='UTF-8'?><env:Envelope xmlns:env='http://schemas.xmlsoap.org/soap/envelope/'
         xmlns:ns0='urn:Eve' xmlns:wsdl='urn:Eve' xmlns:xsd='http://www.w3.org/2001/XMLSchema'
-        xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'><env:Body><ns0:DeleteToken><ns0:username>[GATEWAY_LOGIN]</ns0:username><ns0:password>[GATEWAY_PASSWORD]</ns0:password><ns0:merchantNumber>[GATEWAY_MERCHANT_NUMBER]</ns0:merchantNumber><ns0:token>5999991669787766</ns0:token></ns0:DeleteToken></env:Body></env:Envelope>
+        xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'><env:Body><ns0:DeleteToken><ns0:username>[GATEWAY_LOGIN]</ns0:username><ns0:password>[GATEWAY_PASSWORD]</ns0:password><ns0:merchantNumber>[GATEWAY_MERCHANT_NUMBER]</ns0:merchantNumber><ns0:token>5999991669828669</ns0:token></ns0:DeleteToken></env:Body></env:Envelope>
     headers:
       Content-Type:
       - text/xml;charset=UTF-8
@@ -33,7 +33,7 @@ http_interactions:
       Server:
       - Microsoft-IIS/7.5
       Date:
-      - Wed, 11 Dec 2013 15:03:18 GMT
+      - Wed, 11 Dec 2013 21:00:33 GMT
       Content-Length:
       - '362'
     body:
@@ -42,5 +42,5 @@ http_interactions:
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><soap:Body><DeleteTokenResponse
         xmlns="urn:Eve"><response><ResponseCode>SUCCESS</ResponseCode></response></DeleteTokenResponse></soap:Body></soap:Envelope>
     http_version: 
-  recorded_at: Wed, 11 Dec 2013 15:03:18 GMT
+  recorded_at: Wed, 11 Dec 2013 21:00:34 GMT
 recorded_with: VCR 2.6.0

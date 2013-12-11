@@ -9,34 +9,32 @@ http_interactions:
         xmlns:ns0='urn:Eve' xmlns:wsdl='urn:Eve' xmlns:xsd='http://www.w3.org/2001/XMLSchema'
         xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'><env:Body><ns0:ProcessPayment><ns0:txnReq><ns0:MerchantReference>1</ns0:MerchantReference><ns0:CardNumber>invalid</ns0:CardNumber><ns0:Amount>1000</ns0:Amount><ns0:PaymentType>PAYMENT</ns0:PaymentType><ns0:TxnType>INTERNET_ANONYMOUS</ns0:TxnType></ns0:txnReq><ns0:username>[GATEWAY_LOGIN]</ns0:username><ns0:password>[GATEWAY_PASSWORD]</ns0:password><ns0:merchantNumber>[GATEWAY_MERCHANT_NUMBER]</ns0:merchantNumber></ns0:ProcessPayment></env:Body></env:Envelope>
     headers:
-      content-type:
+      Content-Type:
       - text/xml;charset=UTF-8
-      soapaction:
+      Soapaction:
       - urn:Eve/ProcessPayment
-      accept-encoding:
+      Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      accept:
+      Accept:
       - '*/*'
-      user-agent:
+      User-Agent:
       - Ruby
   response:
     status:
       code: 200
       message: OK
     headers:
-      cache-control:
+      Cache-Control:
       - private, max-age=0,no-store,no-cache,must-revalidate,proxy-revalidate
-      pragma:
+      Pragma:
       - no-cache
-      content-type:
+      Content-Type:
       - text/xml; charset=utf-8
-      server:
+      Server:
       - Microsoft-IIS/7.5
-      date:
-      - Wed, 30 Oct 2013 20:56:07 GMT
-      connection:
-      - close
-      content-length:
+      Date:
+      - Wed, 11 Dec 2013 20:59:22 GMT
+      Content-Length:
       - '454'
     body:
       encoding: UTF-8
@@ -44,6 +42,6 @@ http_interactions:
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><soap:Body><ProcessPaymentResponse
         xmlns="urn:Eve"><ProcessPaymentResult /><response><ResponseCode>ERROR</ResponseCode><ResponseMessage>unable
         to determine card type</ResponseMessage></response></ProcessPaymentResponse></soap:Body></soap:Envelope>
-    http_version: '1.1'
-  recorded_at: Wed, 30 Oct 2013 20:56:07 GMT
+    http_version: 
+  recorded_at: Wed, 11 Dec 2013 20:59:23 GMT
 recorded_with: VCR 2.6.0

@@ -10,40 +10,38 @@ http_interactions:
         xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'><env:Body><ns0:ProcessPayment><ns0:txnReq><ns0:MerchantReference>1</ns0:MerchantReference><ns0:CardNumber>5123456789012346</ns0:CardNumber><ns0:ExpiryDate>9900</ns0:ExpiryDate><ns0:CVC>123</ns0:CVC><ns0:CRN1>Longbob
         Longsen</ns0:CRN1><ns0:Amount>1000</ns0:Amount><ns0:PaymentType>PAYMENT</ns0:PaymentType><ns0:TxnType>INTERNET_ANONYMOUS</ns0:TxnType></ns0:txnReq><ns0:username>[GATEWAY_LOGIN]</ns0:username><ns0:password>[GATEWAY_PASSWORD]</ns0:password><ns0:merchantNumber>[GATEWAY_MERCHANT_NUMBER]</ns0:merchantNumber></ns0:ProcessPayment></env:Body></env:Envelope>
     headers:
-      content-type:
+      Content-Type:
       - text/xml;charset=UTF-8
-      soapaction:
+      Soapaction:
       - urn:Eve/ProcessPayment
-      accept-encoding:
+      Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      accept:
+      Accept:
       - '*/*'
-      user-agent:
+      User-Agent:
       - Ruby
   response:
     status:
       code: 200
       message: OK
     headers:
-      cache-control:
+      Cache-Control:
       - private, max-age=0,no-store,no-cache,must-revalidate,proxy-revalidate
-      pragma:
+      Pragma:
       - no-cache
-      content-type:
+      Content-Type:
       - text/xml; charset=utf-8
-      server:
+      Server:
       - Microsoft-IIS/7.5
-      date:
-      - Wed, 30 Oct 2013 20:55:48 GMT
-      connection:
-      - close
-      content-length:
+      Date:
+      - Wed, 11 Dec 2013 20:58:36 GMT
+      Content-Length:
       - '783'
     body:
       encoding: UTF-8
       string: <?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><soap:Body><ProcessPaymentResponse
-        xmlns="urn:Eve"><ProcessPaymentResult><ResponseCode>0</ResponseCode><AcquirerResponseCode>00</AcquirerResponseCode><AuthorisationResult>Approved</AuthorisationResult><TransactionNumber>135316331</TransactionNumber><ReceiptNumber>38189926331</ReceiptNumber><AuthoriseId>310755459014</AuthoriseId><SettlementDate>20131031</SettlementDate><MaskedCardNumber>512345...346</MaskedCardNumber><CardType>MC</CardType></ProcessPaymentResult><response><ResponseCode>SUCCESS</ResponseCode></response></ProcessPaymentResponse></soap:Body></soap:Envelope>
-    http_version: '1.1'
-  recorded_at: Wed, 30 Oct 2013 20:55:48 GMT
+        xmlns="urn:Eve"><ProcessPaymentResult><ResponseCode>0</ResponseCode><AcquirerResponseCode>00</AcquirerResponseCode><AuthorisationResult>Approved</AuthorisationResult><TransactionNumber>140420816</TransactionNumber><ReceiptNumber>39323970816</ReceiptNumber><AuthoriseId>120758355733</AuthoriseId><SettlementDate>20131212</SettlementDate><MaskedCardNumber>512345...346</MaskedCardNumber><CardType>MC</CardType></ProcessPaymentResult><response><ResponseCode>SUCCESS</ResponseCode></response></ProcessPaymentResponse></soap:Body></soap:Envelope>
+    http_version: 
+  recorded_at: Wed, 11 Dec 2013 20:58:38 GMT
 recorded_with: VCR 2.6.0
