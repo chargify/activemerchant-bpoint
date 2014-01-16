@@ -7,7 +7,7 @@ http_interactions:
       encoding: UTF-8
       string: <?xml version='1.0' encoding='UTF-8'?><env:Envelope xmlns:env='http://schemas.xmlsoap.org/soap/envelope/'
         xmlns:ns0='urn:Eve' xmlns:wsdl='urn:Eve' xmlns:xsd='http://www.w3.org/2001/XMLSchema'
-        xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'><env:Body><ns0:ProcessPayment><ns0:txnReq><ns0:MerchantReference>1</ns0:MerchantReference><ns0:CardNumber>invalid</ns0:CardNumber><ns0:Amount>1000</ns0:Amount><ns0:PaymentType>PAYMENT</ns0:PaymentType><ns0:TxnType>INTERNET_ANONYMOUS</ns0:TxnType></ns0:txnReq><ns0:username>[GATEWAY_LOGIN]</ns0:username><ns0:password>[GATEWAY_PASSWORD]</ns0:password><ns0:merchantNumber>[GATEWAY_MERCHANT_NUMBER]</ns0:merchantNumber></ns0:ProcessPayment></env:Body></env:Envelope>
+        xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'><env:Body><ns0:ProcessPayment><ns0:txnReq><ns0:MerchantReference>1</ns0:MerchantReference><ns0:CardNumber>invalid</ns0:CardNumber><ns0:Amount>1000</ns0:Amount><ns0:PaymentType>PAYMENT</ns0:PaymentType><ns0:TxnType>ECOMMERCE</ns0:TxnType></ns0:txnReq><ns0:username>[GATEWAY_LOGIN]</ns0:username><ns0:password>[GATEWAY_PASSWORD]</ns0:password><ns0:merchantNumber>[GATEWAY_MERCHANT_NUMBER]</ns0:merchantNumber></ns0:ProcessPayment></env:Body></env:Envelope>
     headers:
       Content-Type:
       - text/xml;charset=UTF-8

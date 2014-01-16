@@ -40,7 +40,7 @@ http_interactions:
       encoding: UTF-8
       string: <?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><soap:Body><SearchTransactionsResponse
-        xmlns="urn:Eve"><SearchTransactionsResult><Txn><PaymentType>PREAUTH</PaymentType><TxnType>INTERNET_ANONYMOUS</TxnType><MerchantReference>1</MerchantReference><CRN1>Longbob
+        xmlns="urn:Eve"><SearchTransactionsResult><Txn><PaymentType>PREAUTH</PaymentType><TxnType>ECOMMERCE</TxnType><MerchantReference>1</MerchantReference><CRN1>Longbob
         Longsen</CRN1><CRN2 /><CRN3 /><Amount>1000</Amount><AmountSurcharge>0</AmountSurcharge><ExpiryDate>9900</ExpiryDate><ResponseCode>0</ResponseCode><AcquirerResponseCode>00</AcquirerResponseCode><AuthorisationResult>Approved</AuthorisationResult><TransactionNumber>140420897</TransactionNumber><ReceiptNumber>39323990897</ReceiptNumber><AuthoriseId>120759598773</AuthoriseId><SettlementDate>20131212</SettlementDate><MaskedCardNumber>512345...346</MaskedCardNumber><CardType>MC</CardType><ProcessedDate>2013-12-12T07:59:59.96</ProcessedDate></Txn></SearchTransactionsResult><response><ResponseCode>SUCCESS</ResponseCode></response></SearchTransactionsResponse></soap:Body></soap:Envelope>
     http_version: 
   recorded_at: Wed, 11 Dec 2013 21:00:04 GMT
@@ -51,7 +51,7 @@ http_interactions:
       encoding: UTF-8
       string: <?xml version='1.0' encoding='UTF-8'?><env:Envelope xmlns:env='http://schemas.xmlsoap.org/soap/envelope/'
         xmlns:ns0='urn:Eve' xmlns:wsdl='urn:Eve' xmlns:xsd='http://www.w3.org/2001/XMLSchema'
-        xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'><env:Body><ns0:ProcessPayment><ns0:txnReq><ns0:PaymentType>REVERSAL</ns0:PaymentType><ns0:OriginalTransactionNumber>140420897</ns0:OriginalTransactionNumber><ns0:Amount>1000</ns0:Amount><ns0:TxnType>INTERNET_ANONYMOUS</ns0:TxnType></ns0:txnReq><ns0:username>[PREAUTH_GATEWAY_LOGIN]</ns0:username><ns0:password>[PREAUTH_GATEWAY_PASSWORD]</ns0:password><ns0:merchantNumber>[PREAUTH_GATEWAY_MERCHANT_NUMBER]</ns0:merchantNumber></ns0:ProcessPayment></env:Body></env:Envelope>
+        xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'><env:Body><ns0:ProcessPayment><ns0:txnReq><ns0:PaymentType>REVERSAL</ns0:PaymentType><ns0:OriginalTransactionNumber>140420897</ns0:OriginalTransactionNumber><ns0:Amount>1000</ns0:Amount><ns0:TxnType>ECOMMERCE</ns0:TxnType></ns0:txnReq><ns0:username>[PREAUTH_GATEWAY_LOGIN]</ns0:username><ns0:password>[PREAUTH_GATEWAY_PASSWORD]</ns0:password><ns0:merchantNumber>[PREAUTH_GATEWAY_MERCHANT_NUMBER]</ns0:merchantNumber></ns0:ProcessPayment></env:Body></env:Envelope>
     headers:
       Content-Type:
       - text/xml;charset=UTF-8

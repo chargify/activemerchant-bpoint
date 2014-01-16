@@ -152,7 +152,7 @@ module ActiveMerchant
         if action == 'ProcessPayment'
           parameters[:Amount]        = amount(money) if money
           parameters[:PaymentType] ||= 'PAYMENT'
-          parameters[:TxnType]       = 'INTERNET_ANONYMOUS'
+          parameters[:TxnType]       = 'ECOMMERCE'
         end
 
         response = parse(ssl_post(LIVE_URL, post_data(action, parameters), 'SOAPAction' => "urn:Eve/#{action}", 'Content-Type' => 'text/xml;charset=UTF-8'))

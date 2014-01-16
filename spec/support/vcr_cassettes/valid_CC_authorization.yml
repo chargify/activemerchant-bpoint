@@ -8,7 +8,7 @@ http_interactions:
       string: <?xml version='1.0' encoding='UTF-8'?><env:Envelope xmlns:env='http://schemas.xmlsoap.org/soap/envelope/'
         xmlns:ns0='urn:Eve' xmlns:wsdl='urn:Eve' xmlns:xsd='http://www.w3.org/2001/XMLSchema'
         xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'><env:Body><ns0:ProcessPayment><ns0:txnReq><ns0:PaymentType>PREAUTH</ns0:PaymentType><ns0:MerchantReference>1</ns0:MerchantReference><ns0:CardNumber>5123456789012346</ns0:CardNumber><ns0:ExpiryDate>9900</ns0:ExpiryDate><ns0:CVC>123</ns0:CVC><ns0:CRN1>Longbob
-        Longsen</ns0:CRN1><ns0:Amount>1000</ns0:Amount><ns0:TxnType>INTERNET_ANONYMOUS</ns0:TxnType></ns0:txnReq><ns0:username>[PREAUTH_GATEWAY_LOGIN]</ns0:username><ns0:password>[PREAUTH_GATEWAY_PASSWORD]</ns0:password><ns0:merchantNumber>[PREAUTH_GATEWAY_MERCHANT_NUMBER]</ns0:merchantNumber></ns0:ProcessPayment></env:Body></env:Envelope>
+        Longsen</ns0:CRN1><ns0:Amount>1000</ns0:Amount><ns0:TxnType>ECOMMERCE</ns0:TxnType></ns0:txnReq><ns0:username>[PREAUTH_GATEWAY_LOGIN]</ns0:username><ns0:password>[PREAUTH_GATEWAY_PASSWORD]</ns0:password><ns0:merchantNumber>[PREAUTH_GATEWAY_MERCHANT_NUMBER]</ns0:merchantNumber></ns0:ProcessPayment></env:Body></env:Envelope>
     headers:
       Content-Type:
       - text/xml;charset=UTF-8
